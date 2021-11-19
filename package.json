@@ -7,6 +7,9 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.9",
+    "node-open-geocoder": "^4.0.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0"
   },
