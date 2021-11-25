@@ -1,6 +1,124 @@
 <template>
   <div class="map">
-    <div ref="mapContent" class="mapContent" @mousedown="mapStartInteractive($event)" @mousemove="mapInteractive($event)" @mouseup="mapStopInteractive($event)" @dblclick="setMapZoom($event)" @mouseleave="mapStopInteractive($event)">
+    <div class="mapPanel">
+      <div class="mapPanelRow">
+        <div class="mapPanelRowItem">
+          <div class="input-group mb-3 search">
+            <span class="input-group-text material-icons">
+              menu
+            </span>
+            <input type="text" class="form-control" placeholder="Поиск на картах" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-text material-icons">
+              search
+            </span>
+            <span class="input-group-text material-icons">
+              turn_right
+            </span>
+          </div>
+          <div class="input-group mb-3 search">
+            <span class="input-group-text material-icons">
+              create
+            </span>
+            <span class="input-group-text material-icons">
+              expand_more
+            </span>
+          </div>
+          <button class="btn btn-light placeBtn">
+            <span class="material-icons placeBtnItem">
+              local_gas_station
+            </span>
+            <span class="placeBtnItem">
+              Бензин
+            </span>
+          </button>
+          <button class="btn btn-light placeBtn">
+            <span class="material-icons placeBtnItem">
+              local_gas_station
+            </span>
+            <span class="placeBtnItem">
+              Бензин
+            </span>
+          </button>
+          <button class="btn btn-light placeBtn">
+            <span class="material-icons placeBtnItem">
+              local_gas_station
+            </span>
+            <span class="placeBtnItem">
+              Бензин
+            </span>
+          </button>
+          <button class="btn btn-light placeBtn">
+            <span class="material-icons placeBtnItem">
+              local_gas_station
+            </span>
+            <span class="placeBtnItem">
+              Бензин
+            </span>
+          </button>
+          <button class="btn btn-light placeBtn">
+            <span class="material-icons placeBtnItem">
+              local_gas_station
+            </span>
+            <span class="placeBtnItem">
+              Бензин
+            </span>
+          </button>
+        </div>
+        <div class="mapPanelRowItem">
+          <span class="material-icons mapPanelRowItemChildItem">
+            apps
+          </span>
+          <div class="userLogo mapPanelRowItemChildItem">
+            
+          </div>
+        </div>
+      </div>
+      <div class="mapPanelRow">
+        <div class="mapPanelRowItem">
+          <div class="layers">
+
+          </div>
+        </div>
+        <div class="mapPanelRowItem mapPanelRowItemColumn">
+          <span class="btn btn-light navigationBtn adjustBtn material-icons">
+            adjust
+          </span>
+          <span class="btn btn-light navigationBtn material-icons" @click="setMapZoom(event, 1)">
+            add
+          </span>
+          <span class="btn btn-light navigationBtn material-icons" @click="setMapZoom(event, -1)">
+            remove
+          </span>
+          <div>
+            s
+          </div>
+          <div class="mapPanelRowItemFooter">
+            <span class="mapPanelRowItemFooterItem">
+              Картографические данные @ Mapper, {{ new Date().getFullYear() }}
+            </span>
+            <span class="mapPanelRowItemFooterItem">
+              Россия
+            </span>
+            <span class="mapPanelRowItemFooterItem">
+              Условия использования
+            </span>
+            <span class="mapPanelRowItemFooterItem">
+              Конфиденциальность
+            </span>
+            <span class="mapPanelRowItemFooterItem">
+              Оставить отзыв
+            </span>
+            <span class="mapPanelRowItemFooterItem">
+              500м
+            </span>
+            <span class="mapPanelRowItemFooterItem">
+              __________________
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div ref="mapContent" class="mapContent" @mousedown="mapStartInteractive($event)" @mousemove="mapInteractive($event)" @mouseup="mapStopInteractive($event)" @dblclick="setMapZoom($event, 1)" @mouseleave="mapStopInteractive($event)">
       <!-- <div class="country" title="Россия">
       </div>
       <div class="country" title="Америка">
@@ -14,7 +132,8 @@
           Вы
         </span>
       </div>
-    </div>  
+    </div>
+
   </div>
 </template>
 
@@ -176,13 +295,13 @@ export default {
     mapStopInteractive(event) {
       this.isInteractive = false
     },
-    setMapZoom(event) {
+    setMapZoom(event, delta) {
       let previousZoom = this.$refs.mapContent.style.zoom
       if(!previousZoom.length) {
         previousZoom = 1.0
       }
       let digitalPreviousZoom = Number(previousZoom)
-      let newZoom = digitalPreviousZoom + this.zoomDelta
+      let newZoom = digitalPreviousZoom + this.zoomDelta * delta
       
       let previousCoord = this.$refs.mapContent.getBoundingClientRect()
       let previousCoordY = previousCoord.top
@@ -252,6 +371,109 @@ export default {
     position: relative;
     top: 0px;
     left: 0px;
+  }
+
+  .mapPanel {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .mapPanelRow {
+    height: 50px;
+    /* background-color: rgb(255, 0, 0); */
+    width: 100%;
+    display: flex;
+    width: 100%;
+    /* pointer-events: none; */
+    justify-content: space-between;
+  }
+
+  .userLogo {
+    border-radius: 100%;
+    width: 35px;
+    height: 35px;
+    background-color: rgb(0, 150, 0);
+  }
+
+  .mapPanelRowItem {
+    display: flex;
+    align-items: center;
+  }
+
+  .mapPanelRowItemChildItem {
+    margin: 0px 5px;
+  }
+
+  .placeBtn {
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 35px;
+    width: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 10px;
+  }
+
+  .placeBtnItem {
+    margin: 0px 5px;
+    font-weight: bolder;
+  }
+
+  .search {
+    margin: 0px 2px;
+    width: 265px;
+    height: 53px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .mapPanelRowItemFooter {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(255, 255, 255);
+  }
+
+  .mapPanelRowItemFooterItem {
+    margin: 0px 5px;
+    font-size: 12px;
+  }
+
+  .mapPanelRowItemColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  .navigationBtn {
+    border: 1px solid rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 10px;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .adjustBtn {
+    margin: 10px;
+  }
+
+  .layers {
+    border-radius: 15px;
+    width: 85px;
+    height: 85px;
+    background-image: url('https://www.zerogravity.fi/wp-content/uploads/2019/11/satellite-data-e1572891876593-621x556.jpg');
+    margin: 10px;
+    align-self: flex-end;
   }
 
 </style>
